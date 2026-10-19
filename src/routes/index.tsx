@@ -2,8 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   Zap, FileText, Gauge, Wrench, Lightbulb, Fan, ShieldCheck, Award, BadgeCheck,
-  Clock, MessageCircle, Menu, X, Play,
+  Clock, MessageCircle, MoreVertical, X,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { VideoCard } from "@/components/work-video";
+import { WHATSAPP } from "@/lib/contact";
 import logo from "@/assets/logo.jpeg.asset.json";
 import projeto from "@/assets/projeto.jpeg.asset.json";
 import v1 from "@/assets/video1.mp4.asset.json";
@@ -16,8 +19,11 @@ import p2 from "@/assets/poster2.jpg.asset.json";
 import p3 from "@/assets/poster3.jpg.asset.json";
 import p4 from "@/assets/poster4.jpg.asset.json";
 import p5 from "@/assets/poster5.jpg.asset.json";
-
-const WHATSAPP = "https://contate.me/5521966372706";
+import w1 from "@/assets/video1.webm.asset.json";
+import w2 from "@/assets/video2.webm.asset.json";
+import w3 from "@/assets/video3.webm.asset.json";
+import w4 from "@/assets/video4.webm.asset.json";
+import w5 from "@/assets/video5.webm.asset.json";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -51,11 +57,11 @@ const services = [
 ];
 
 const videos = [
-  { src: v1.url, poster: p1.url },
-  { src: v2.url, poster: p2.url },
-  { src: v3.url, poster: p3.url },
-  { src: v4.url, poster: p4.url },
-  { src: v5.url, poster: p5.url },
+  { src: v1.url, webm: w1.url, poster: p1.url },
+  { src: v2.url, webm: w2.url, poster: p2.url },
+  { src: v3.url, webm: w3.url, poster: p3.url },
+  { src: v4.url, webm: w4.url, poster: p4.url },
+  { src: v5.url, webm: w5.url, poster: p5.url },
 ];
 
 function WhatsButton({ children, variant = "primary", className = "" }: { children: React.ReactNode; variant?: "primary" | "whatsapp"; className?: string }) {
@@ -85,54 +91,35 @@ function Header() {
   const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/90 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4">
-        <a href="#inicio" className="flex shrink-0 items-center gap-2">
+      <div className="mx-auto grid h-16 max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-4 lg:flex lg:justify-between lg:gap-4">
+        <a href="#inicio" className="flex min-w-0 items-center gap-2">
           <img src={logo.url} alt="Logo Eletro Easy" className="h-11 w-11 rounded-md object-cover" />
-          <span className="font-display text-xl font-bold uppercase">Eletro <span className="text-primary">Easy</span></span>
+          <span className="truncate font-display text-xl font-bold uppercase">Eletro <span className="text-primary">Easy</span></span>
         </a>
         <nav aria-label="Principal" className="hidden lg:block">
           <ul className="flex gap-6 text-sm font-medium">
             {nav.map((n) => <li key={n.href}><a href={n.href} className="text-muted-foreground transition hover:text-primary">{n.label}</a></li>)}
           </ul>
         </nav>
-        <WhatsButton className="hidden px-4 py-2 text-sm lg:inline-flex">Solicitar orçamento grátis</WhatsButton>
-        <button type="button" className="rounded-md p-2 lg:hidden" aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open} aria-controls="menu-mobile" onClick={() => setOpen(!open)}>
-          {open ? <X /> : <Menu />}
-        </button>
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
+          <Button asChild variant="outline" className="h-10 border-border bg-transparent px-3 text-foreground shadow-none hover:bg-secondary hover:text-primary">
+            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer" aria-label="Falar pelo WhatsApp">
+              <MessageCircle aria-hidden /> <span className="hidden min-[360px]:inline">WhatsApp</span>
+            </a>
+          </Button>
+          <Button type="button" variant="ghost" size="icon" className="h-11 w-11 lg:hidden" aria-label={open ? "Fechar menu" : "Abrir menu"} aria-expanded={open} aria-controls="menu-mobile" onClick={() => setOpen(!open)}>
+            {open ? <X /> : <MoreVertical />}
+          </Button>
+        </div>
       </div>
       {open && (
         <nav id="menu-mobile" aria-label="Menu móvel" className="border-t border-border bg-background px-4 pb-6 lg:hidden">
           <ul className="flex flex-col py-2">
             {nav.map((n) => <li key={n.href}><a href={n.href} onClick={() => setOpen(false)} className="block py-3 font-medium">{n.label}</a></li>)}
           </ul>
-          <WhatsButton className="w-full">Solicitar orçamento grátis</WhatsButton>
         </nav>
       )}
     </header>
-  );
-}
-
-function VideoCard({ src, poster, index }: { src: string; poster: string; index: number }) {
-  const [playing, setPlaying] = useState(false);
-  return (
-    <div className="overflow-hidden rounded-xl border border-border bg-card">
-      <div className="relative aspect-video bg-surface-deep">
-        {playing ? (
-          <video src={src} poster={poster} controls autoPlay playsInline preload="metadata" className="h-full w-full object-contain">
-            Seu navegador não suporta vídeos.
-          </video>
-        ) : (
-          <button type="button" onClick={() => setPlaying(true)} className="group absolute inset-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring" aria-label={`Reproduzir vídeo ${index + 1}`}>
-            <img src={poster} alt={`Trabalho realizado pela Eletro Easy – vídeo ${index + 1}`} loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
-            <span className="absolute inset-0 bg-surface-deep/40 transition group-hover:bg-surface-deep/20" />
-            <span className="absolute left-1/2 top-1/2 grid h-16 w-16 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-primary text-primary-foreground shadow-glow">
-              <Play className="ml-1 h-7 w-7" fill="currentColor" aria-hidden />
-            </span>
-          </button>
-        )}
-      </div>
-      <p className="px-4 py-3 text-sm font-medium text-muted-foreground">Vídeo {index + 1}</p>
-    </div>
   );
 }
 
@@ -188,10 +175,6 @@ function Index() {
                 </li>
               ))}
             </ul>
-            <div className="mt-12 flex flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-secondary p-8 text-center sm:flex-row sm:justify-between sm:text-left">
-              <p className="font-display text-2xl font-bold uppercase">Precisa de um eletricista? Fale com a gente.</p>
-              <WhatsButton>Solicitar orçamento grátis</WhatsButton>
-            </div>
           </div>
         </section>
 
@@ -253,7 +236,7 @@ function Index() {
             <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 font-medium">
               <Clock className="h-5 w-5 text-primary" aria-hidden /> Horário de atendimento: das 8h às 18h
             </p>
-            <div className="mt-8"><WhatsButton variant="whatsapp" className="px-8 py-4 text-lg">Falar pelo WhatsApp</WhatsButton></div>
+            <div className="mt-8"><Button asChild variant="link"><a href={WHATSAPP} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden /> Solicitar orçamento pelo WhatsApp</a></Button></div>
           </div>
         </section>
       </main>
@@ -276,7 +259,7 @@ function Index() {
           <div>
             <h2 className="font-display text-lg font-bold uppercase">Atendimento</h2>
             <p className="mt-3 text-sm text-muted-foreground">Das 8h às 18h</p>
-            <WhatsButton variant="whatsapp" className="mt-4">Falar pelo WhatsApp</WhatsButton>
+            <Button asChild variant="link" className="mt-4 h-auto px-0"><a href={WHATSAPP} target="_blank" rel="noopener noreferrer"><MessageCircle aria-hidden /> WhatsApp · (21) 96637-2706</a></Button>
           </div>
         </div>
         <p className="border-t border-border py-6 text-center text-sm text-muted-foreground">© {year} Eletro Easy. Todos os direitos reservados.</p>
