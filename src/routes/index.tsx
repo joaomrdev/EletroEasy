@@ -7,23 +7,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { VideoCard } from "@/components/work-video";
 import { WHATSAPP } from "@/lib/contact";
-import logo from "@/assets/logo.jpeg.asset.json";
-import projeto from "@/assets/projeto.jpeg.asset.json";
-import v1 from "@/assets/video1.mp4.asset.json";
-import v2 from "@/assets/video2.mp4.asset.json";
-import v3 from "@/assets/video3.mp4.asset.json";
-import v4 from "@/assets/video4.mp4.asset.json";
-import v5 from "@/assets/video5.mp4.asset.json";
-import p1 from "@/assets/poster1.jpg.asset.json";
-import p2 from "@/assets/poster2.jpg.asset.json";
-import p3 from "@/assets/poster3.jpg.asset.json";
-import p4 from "@/assets/poster4.jpg.asset.json";
-import p5 from "@/assets/poster5.jpg.asset.json";
-import w1 from "@/assets/video1.webm.asset.json";
-import w2 from "@/assets/video2.webm.asset.json";
-import w3 from "@/assets/video3.webm.asset.json";
-import w4 from "@/assets/video4.webm.asset.json";
-import w5 from "@/assets/video5.webm.asset.json";
+import { LOGO, PROJETO, VIDEOS } from "@/lib/media";
+
+const logo = { url: LOGO };
+const projeto = { url: PROJETO };
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -56,13 +43,7 @@ const services = [
   { icon: Fan, title: "Instalação de chuveiros e ventiladores", text: "Instalação de chuveiros e ventiladores." },
 ];
 
-const videos = [
-  { src: v1.url, webm: w1.url, poster: p1.url },
-  { src: v2.url, webm: w2.url, poster: p2.url },
-  { src: v3.url, webm: w3.url, poster: p3.url },
-  { src: v4.url, webm: w4.url, poster: p4.url },
-  { src: v5.url, webm: w5.url, poster: p5.url },
-];
+const videos = VIDEOS;
 
 function WhatsButton({ children, variant = "primary", className = "" }: { children: React.ReactNode; variant?: "primary" | "whatsapp"; className?: string }) {
   const styles = variant === "primary"
