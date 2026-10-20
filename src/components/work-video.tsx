@@ -8,7 +8,7 @@ export function VideoCard({ src, webm, poster, index }: { src: string; webm: str
   const [attempt, setAttempt] = useState(0);
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card">
-      <div className="relative aspect-video bg-surface-deep">
+      <div className="relative aspect-[3/4] bg-surface-deep">
         {failed ? (
           <div role="alert" className="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center">
             <p className="text-sm text-muted-foreground">Não foi possível carregar este vídeo.</p>
